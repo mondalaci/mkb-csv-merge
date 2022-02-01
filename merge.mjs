@@ -9,9 +9,23 @@ const allRecords = [];
 for (const file of files) {
     const outBuffer = fs.readFileSync(file);
     const lines = iconv.decode(outBuffer, 'iso-8859-2')
+        .replace(/CRV\*/g, '')
+        .replace(/ Vilnius LTL/g, '')
+        .replace(/ Vilnius LTU/g, '')
+        .replace(/&#34;/g, '"')
         .replace(/&#34;/g, '"')
         .replace(/&#38;/g, "&")
         .replace(/&#39;/g, "'")
+        .replace(/A'/g, "Á")
+        .replace(/E'/g, "É")
+        .replace(/I'/g, "Í")
+        .replace(/O'/g, "Ó")
+        .replace(/O:/g, "Ö")
+        .replace(/O"/g, "Ő")
+        .replace(/U'/g, "Ú")
+        .replace(/U:/g, "Ü")
+        .replace(/U"/g, "Ű")
+        .replace(/"/g, "")
         .split('\n');
     const csvLines = lines.slice(4);
     for (const line of csvLines) {
