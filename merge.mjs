@@ -13,8 +13,11 @@ for (const file of files) {
     const csvLines = lines.slice(4);
     for (const line of csvLines) {
         const matches = line.match(/^\d+;(.*)/);
-        if (line && !allRecords.includes(matches[1])) {
-            allRecords.push(matches[1]);
+        if (line) {
+            const match = matches[1].replace(/;[^;]*\*\*\*\*\*\*[^;]*;/, ';;'); // Clean redundant transaction comments
+            if (!allRecords.includes(match)) {
+                allRecords.push(match);
+            }
         }
     }
 }
