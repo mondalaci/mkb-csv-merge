@@ -8,8 +8,11 @@ const files = ls('szamlatortenet_*.csv');
 const allRecords = [];
 for (const file of files) {
     const outBuffer = fs.readFileSync(file);
-    const out = iconv.decode(outBuffer, 'iso-8859-2');
-    const lines = out.split('\n');
+    const lines = iconv.decode(outBuffer, 'iso-8859-2')
+        .replace(/&#34;/g, '"')
+        .replace(/&#38;/g, "&")
+        .replace(/&#39;/g, "'")
+        .split('\n');
     const csvLines = lines.slice(4);
     for (const line of csvLines) {
         const matches = line.match(/^\d+;(.*)/);
