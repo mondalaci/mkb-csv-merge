@@ -30,10 +30,15 @@ for (const file of files) {
     const csvLines = lines.slice(4);
     for (const line of csvLines) {
         const matches = line.match(/^\d+;(.*)/);
-        if (line) {
+        if (matches) {
             const match = matches[1].replace(/;[^;]*\*\*\*\*\*\*[^;]*;/, ';;'); // Clean redundant transaction comments
-            if (!allRecords.includes(match)) {
-                allRecords.push(match);
+            let [date, type, account, merchant, merchantAccount, bic, country, transactionId, amount, currency, note] = match.split(';');
+            if (merchant === 'N/A' && !note) {
+                note = type;
+            }
+            const record = `${date};${merchant};${amount};${currency};${note}`;
+            if (!allRecords.includes(record)) {
+                allRecords.push(record);
             }
         }
     }
